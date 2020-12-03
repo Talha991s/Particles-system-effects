@@ -24,6 +24,7 @@ public class PlayerBehaviour : MonoBehaviour
     public LayerMask collisionWallLayer;
     public RampDirection rampDirection;
     public bool onRamp;
+    public float rampForceFactor;
 
     [Header("Player Abilities")] 
     public int health;
@@ -116,11 +117,11 @@ public class PlayerBehaviour : MonoBehaviour
                     transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
                     if (onRamp && rampDirection == RampDirection.UP)
                     {
-                        m_rigidBody2D.AddForce(Vector2.up * horizontalForce * 0.5f * Time.deltaTime);
+                        m_rigidBody2D.AddForce(Vector2.up * horizontalForce * rampForceFactor * Time.deltaTime);
                     }
                     else if (onRamp && rampDirection == RampDirection.DOWN)
                     {
-                        m_rigidBody2D.AddForce(Vector2.down * horizontalForce * 0.5f * Time.deltaTime);
+                        m_rigidBody2D.AddForce(Vector2.down * horizontalForce * rampForceFactor * Time.deltaTime);
                     }
 
 
@@ -133,11 +134,11 @@ public class PlayerBehaviour : MonoBehaviour
                     transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
                     if (onRamp && rampDirection == RampDirection.UP)
                     {
-                        m_rigidBody2D.AddForce(Vector2.up * horizontalForce * 0.5f * Time.deltaTime);
+                        m_rigidBody2D.AddForce(Vector2.up * horizontalForce * rampForceFactor * Time.deltaTime);
                     }
                     else if (onRamp && rampDirection == RampDirection.DOWN)
                     {
-                        m_rigidBody2D.AddForce(Vector2.down * horizontalForce * 0.5f * Time.deltaTime);
+                        m_rigidBody2D.AddForce(Vector2.down * horizontalForce * rampForceFactor * Time.deltaTime);
                     }
 
                     m_animator.SetInteger("AnimState", (int)PlayerAnimationType.RUN);
