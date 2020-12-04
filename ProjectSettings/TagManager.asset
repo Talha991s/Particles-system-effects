@@ -12,6 +12,7 @@ TagManager:
   - Opossum
   - Enemy
   - Bullet
+  - HealthBar
   layers:
   - Default
   - TransparentFX
@@ -28,8 +29,8 @@ TagManager:
   - Player
   - Bullet
   - AI
-  - 
-  - 
+  - HealthBar
+  - PlayerMarker
   - 
   - 
   - 
@@ -51,4 +52,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3421350941
+    locked: 0
+  - name: Enemy
+    uniqueID: 102473037
     locked: 0

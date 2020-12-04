@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1143666445084779957}
   - component: {fileID: 1143666445084779958}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1143666445278579900}
   - component: {fileID: 1143666445278579901}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1143666445321473600}
   - component: {fileID: 1143666445321473601}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,7 +255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1143666445412697625}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,9 +287,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1143666446871949209}
   - component: {fileID: 1143666446871949210}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: HealthBar
-  m_TagString: Untagged
+  m_TagString: HealthBar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

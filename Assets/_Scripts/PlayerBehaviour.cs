@@ -3,6 +3,7 @@ using System.Collections.Generic;
 //using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 [System.Serializable]
 public enum ImpulseSounds
@@ -44,6 +45,13 @@ public class PlayerBehaviour : MonoBehaviour
     [Header("Impulse Sounds")]
     public AudioSource[] sounds;
 
+    [Header("Screen Shakes")]
+    public CinemachineVirtualCamera vcam1;
+    public CinemachineBasicMultiChannelPerlin perlin;
+    public float shakeIntensity;
+    public float maxShakeTime;
+    public float shakeTimer;
+    public bool iscameraShaking;
 
     private ParticleSystem m_dustTrail;
     private Rigidbody2D m_rigidBody2D;
@@ -56,12 +64,21 @@ public class PlayerBehaviour : MonoBehaviour
     {
         health = 100;
         lives = 3;
+        iscameraShaking = false;
+        shakeTimer = maxShakeTime;
 
         m_rigidBody2D = GetComponent<Rigidbody2D>();
+
         m_spriteRenderer = GetComponent<SpriteRenderer>();
         m_animator = GetComponent<Animator>();
+
         m_dustTrail = GetComponentInChildren<ParticleSystem>();
+
         sounds = GetComponents<AudioSource>();
+
+
+        perlin = vcam1.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+    
     }
 
     // Update is called once per frame
@@ -70,6 +87,18 @@ public class PlayerBehaviour : MonoBehaviour
         _LookInFront();
         _LookAhead();
         _Move();
+
+        if(iscameraShaking)
+        {
+            shakeTimer -= Time.deltaTime;
+            if(shakeTimer <= 0.0f) // timedout
+            {
+                perlin.m_AmplitudeGain = 0.0f;
+                shakeTimer = maxShakeTime;
+                iscameraShaking = false;
+            }
+        }
+
     }
 
     private void _LookInFront()
@@ -238,6 +267,8 @@ public class PlayerBehaviour : MonoBehaviour
 
         sounds[(int)ImpulseSounds.Die].Play();
 
+ 
+
         livesHUD.SetInteger("LivesState", lives);
 
         if (lives > 0)
@@ -260,6 +291,8 @@ public class PlayerBehaviour : MonoBehaviour
 
         PlayRandomHitSound();
 
+        ShakeCamera();
+
         if (health <= 0)
         {
             LoseLife();
@@ -277,5 +310,11 @@ public class PlayerBehaviour : MonoBehaviour
     {
         var randomHitSound = Random.Range(1, 3);
         sounds[randomHitSound].Play();
+    }
+
+    private void ShakeCamera()
+    {
+        perlin.m_AmplitudeGain = shakeIntensity;
+        iscameraShaking = true;
     }
 }
