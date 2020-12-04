@@ -32,6 +32,8 @@ public class PlayerBehaviour : MonoBehaviour
     public BarController healthBar;
     public Animator livesHUD;
 
+
+    private ParticleSystem m_dustTrail;
     private Rigidbody2D m_rigidBody2D;
     private SpriteRenderer m_spriteRenderer;
     private Animator m_animator;
@@ -46,6 +48,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_rigidBody2D = GetComponent<Rigidbody2D>();
         m_spriteRenderer = GetComponent<SpriteRenderer>();
         m_animator = GetComponent<Animator>();
+        m_dustTrail = GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -124,6 +127,7 @@ public class PlayerBehaviour : MonoBehaviour
                         m_rigidBody2D.AddForce(Vector2.down * horizontalForce * rampForceFactor * Time.deltaTime);
                     }
 
+                    CreateDustTrail();
 
                     m_animator.SetInteger("AnimState", (int)PlayerAnimationType.RUN);
                 }
@@ -141,6 +145,8 @@ public class PlayerBehaviour : MonoBehaviour
                         m_rigidBody2D.AddForce(Vector2.down * horizontalForce * rampForceFactor * Time.deltaTime);
                     }
 
+                    CreateDustTrail();
+
                     m_animator.SetInteger("AnimState", (int)PlayerAnimationType.RUN);
                 }
                 else
@@ -155,6 +161,7 @@ public class PlayerBehaviour : MonoBehaviour
                 m_rigidBody2D.AddForce(Vector2.up * verticalForce);
                 m_animator.SetInteger("AnimState", (int) PlayerAnimationType.JUMP);
                 isJumping = true;
+                CreateDustTrail();
             }
             else
             {
@@ -224,5 +231,12 @@ public class PlayerBehaviour : MonoBehaviour
         {
             LoseLife();
         }
+    }
+
+    private void CreateDustTrail()
+    {
+        //dustTrail.GetComponent<Renderer>().material.SetColor("_Color", dustTrailColor);
+
+        m_dustTrail.Play();
     }
 }
