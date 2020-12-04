@@ -1,8 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
+//using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+[System.Serializable]
+public enum ImpulseSounds
+{
+    Jump,
+    Bullet,
+    Hit1,
+    Die
+}
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -32,6 +41,9 @@ public class PlayerBehaviour : MonoBehaviour
     public BarController healthBar;
     public Animator livesHUD;
 
+    [Header("Impulse Sounds")]
+    public AudioSource[] sounds;
+
 
     private ParticleSystem m_dustTrail;
     private Rigidbody2D m_rigidBody2D;
@@ -49,6 +61,7 @@ public class PlayerBehaviour : MonoBehaviour
         m_spriteRenderer = GetComponent<SpriteRenderer>();
         m_animator = GetComponent<Animator>();
         m_dustTrail = GetComponentInChildren<ParticleSystem>();
+        sounds = GetComponents<AudioSource>();
     }
 
     // Update is called once per frame
@@ -161,6 +174,8 @@ public class PlayerBehaviour : MonoBehaviour
                 m_rigidBody2D.AddForce(Vector2.up * verticalForce);
                 m_animator.SetInteger("AnimState", (int) PlayerAnimationType.JUMP);
                 isJumping = true;
+                sounds[(int)ImpulseSounds.Jump].Play();
+
                 CreateDustTrail();
             }
             else
@@ -203,9 +218,25 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            // Damage Delay 
+
+            if(Time.frameCount % 20 == 0)
+            {
+                TakeDamage(5);
+            }
+
+        }
+    }
+
     public void LoseLife()
     {
         lives -= 1;
+
+        sounds[(int)ImpulseSounds.Die].Play();
 
         livesHUD.SetInteger("LivesState", lives);
 
@@ -227,6 +258,8 @@ public class PlayerBehaviour : MonoBehaviour
         health -= damage;
         healthBar.SetValue(health);
 
+        PlayRandomHitSound();
+
         if (health <= 0)
         {
             LoseLife();
@@ -238,5 +271,11 @@ public class PlayerBehaviour : MonoBehaviour
         //dustTrail.GetComponent<Renderer>().material.SetColor("_Color", dustTrailColor);
 
         m_dustTrail.Play();
+    }
+
+    private void PlayRandomHitSound()
+    {
+        var randomHitSound = Random.Range(1, 3);
+        sounds[randomHitSound].Play();
     }
 }
